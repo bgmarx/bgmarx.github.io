@@ -1,0 +1,24 @@
+# Dependencies
+markdown:         redcarpet
+pygments:         true
+
+# Permalinks
+permalink:        pretty
+
+# Setup
+title:            bgmarx.com
+tagline:          'Some tagline'
+description:      'Some blog'
+url:              http://bgmarx.com
+
+author:
+  name:           'Ben Marx'
+  url:            ''
+
+paginate:         5
+
+# Custom vars
+version:          1.0.0
+
+github:
+  repo:           https://github.com/bgmarx.com/bgmarx.github.io
