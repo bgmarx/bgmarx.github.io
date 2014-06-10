@@ -6,9 +6,9 @@ pygments:         true
 permalink:        pretty
 
 # Setup
-title:            bgmarx.com
-tagline:          'Some tagline'
-description:      'Some blog'
+title:            Ben Marx
+tagline:          ''
+description:      ''
 url:              http://bgmarx.com
 
 author:

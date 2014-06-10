@@ -2,29 +2,30 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 
   {% include head.html %}
-
   <body>
-
-    {% include sidebar.html %}
-
-    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
-         content to avoid any CSS collisions with our real content. -->
     <div class="wrap">
       <div class="masthead">
         <div class="container">
           <h3 class="masthead-title">
             <a href="/" title="Home">{{ site.title }}</a>
-            <small>{{ site.tagline }}</small>
           </h3>
+          <div class="list-group">
+
+            <small>
+              <a href="/about">About</a> / 
+              <a href="mailto:benyamin.marx@gmail.com"><i class="fa fa-envelope fa-fw"></i></a> /
+              <a class="list-group-item" href="https://github.com/bgmarx"   target="_blank"><i class="fa fa-github fa-fw"></i></a> /
+              <a class="list-group-item" href="http://instagram.com/bgmarx" target="_blank"><i class="fa fa-instagram fa-fw"></i></a> /
+              <a class="list-group-item" href="https://twitter.com/bgmarx"  target="_blank"><i class="fa fa-twitter fa-fw"></i></a>
+            </small>
+          </div>
         </div>
+
       </div>
 
       <div class="container content">
         {{ content }}
       </div>
     </div>
-
-    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
-
   </body>
 </html>
