@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+    Hello Myo
+    
+  </title>
+
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+  <body>
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Ben Marx</a>
+          </h3>
+          <div class="list-group">
+
+            <small>
+              <a href="/about">About</a> / 
+              <a href="mailto:benyamin.marx@gmail.com"><i class="fa fa-envelope fa-fw"></i></a> /
+              <a class="list-group-item" href="https://github.com/bgmarx"   target="_blank"><i class="fa fa-github fa-fw"></i></a> /
+              <a class="list-group-item" href="http://instagram.com/bgmarx" target="_blank"><i class="fa fa-instagram fa-fw"></i></a> /
+              <a class="list-group-item" href="https://twitter.com/bgmarx"  target="_blank"><i class="fa fa-twitter fa-fw"></i></a>
+            </small>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Hello Myo</h1>
+  <span class="post-date">20 Dec 2014</span>
+  <h1>Hello Myo</h1>
+
+<p>After a year of waiting, the <a href="https://www.thalmic.com/en/myo/">Myo</a> finally arrived.  In the year of waiting for it, there has been many different projects I&#39;ve
+been wanting to undertake.  The initial step: writing a Ruby wrapper to interact with Myo.</p>
+
+<h2>Myo Ruby Wrapper</h2>
+
+<p>When I finally received notification that the Myo had shipped, I began to do some cursory research on what libraries existed and if there were any in Ruby.  At the time there weren&#39;t so I created a Ruby gem but hadn&#39;t bothered to push it since I had no physical Myo to interact with.  Instead I cloned the Python libray (Myo-python) and began to read through it and the iOS sdk.  And tonight when I get home from a trip to Kyoto and Nara, the Myo was waiting.</p>
+
+<h3>Simple Beginnings</h3>
+
+<p>After a year of waiting, the <a href="https://www.thalmic.com/en/myo/">Myo</a> finally arrived.  In the year of waiting for it, there has been many different projects I&#39;ve
+been wanting to undertake.  The initial step: writing a Ruby wrapper to interact with Myo.</p>
+
+<h2>Myo Ruby Wrapper</h2>
+
+<p>When I finally received notification that the Myo had shipped, I began to do some cursory research on what libraries existed and if there were any in Ruby.  At the time there weren&#39;t so I created a Ruby gem but hadn&#39;t bothered to push it since I had no physical Myo to interact with.  Instead I cloned the Python libray (Myo-python) and began to read through it and the iOS sdk.  And tonight when I get home from a trip to Kyoto and Nara, the Myo was waiting.</p>
+
+<h3>Simple Beginnings</h3>
+
+<p>The <a href="https://https://github.com/bgmarx/myo-ruby-wrapper">Myo Ruby Wrapper</a> is very much a work in progress but I have managed to get be able to read various events from the Myo using the <a href="https://github.com/mwylde/em-websocket-client">EM Websocket Client Gem</a> and parsing the JSON responses.  Each message from the myo is an array like the following:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">[
+  &quot;event&quot;,
+  {
+    &quot;myo&quot;:0,
+    &quot;timestamp&quot;:&quot;52593461767&quot;,
+    &quot;type&quot;:&quot;paired&quot;,
+    &quot;version&quot;:[1,1,5,2]
+  }
+]
+</code></pre></div>
+<p>Each message can be broken into two pieces; first is presumably the notification - <em>event</em> - and the second is a hash with <em>myo</em>, <em>timestamp</em>, <em>type</em> and <em>version</em>.  The <em>timestamp</em> and <em>version</em> fields are self-explanatory.  I&#39;m not sure what the <em>myo</em> fields signifies yet.  The most useful field is the <em>type</em> field.  This field gives information about what the Myo is doing (or has already done I suppose is more accurate).</p>
+
+<p>The event types I&#39;ve uncovered so far:</p>
+
+<ul>
+<li><em>paired</em> signifies that the Myo is paired to the bluetooth receiver</li>
+<li><em>connected</em> signifies that the Myo has connected</li>
+<li><em>unlocked</em> signifies that the Myo has received the thumb-to-middle-finger gesture which unlocks the Myo</li>
+<li><em>arm_synced</em> signifies the initial gesture to connect the Myo has been successfully completed.  It also tells the arm that the Myo is on and the x_direction.</li>
+<li><em>pose</em> gives information about the gesture itself.</li>
+<li><em>orientation</em> provides <em>accelermoter</em>, <em>gyroscope</em> and and <em>orientation</em> details.</li>
+</ul>
+
+<p>Right now the gem is very basic and can only provide feedback as to the gesture the Myo has received.  As I&#39;m still adding <em>types</em>, the Event Machine connection so far is just one big case switch.  Once the essential fields have been locked down (through some API research no doubt), it can be refactored into something more useful.</p>
+
+<h3>Contribute</h3>
+
+<p>I would encourage anyone who is interested in Myo or helping to develop a gem wrapper for Myo to fork or submit a pull request to: <a href="https://https://github.com/bgmarx/myo-ruby-wrapper">Myo Ruby Wrapper</a></p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+  </ul>
+</div>
+
+      </div>
+    </div>
+  </body>
+</html>
