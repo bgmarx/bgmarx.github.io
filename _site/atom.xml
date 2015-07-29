@@ -4,7 +4,7 @@
  <title>Ben Marx</title>
  <link href="http://bgmarx.com/atom.xml" rel="self"/>
  <link href="http://bgmarx.com/"/>
- <updated>2014-12-21T23:37:23+09:00</updated>
+ <updated>2015-07-28T22:58:37-07:00</updated>
  <id>http://bgmarx.com</id>
  <author>
    <name>Ben Marx</name>
@@ -13,9 +13,22 @@
 
  
  <entry>
+   <title>Elixir Meetup - Elixir in Production</title>
+   <link href="http://bgmarx.com/2015/07/28/Elixir-Meetup-Talk/"/>
+   <updated>2015-07-28T00:00:00-07:00</updated>
+   <id>http://bgmarx.com/2015/07/28/Elixir-Meetup-Talk</id>
+   <content type="html">&lt;p&gt;I was fortunate enough to give a talk on Elixir in Production at the first Elixir meetup in San Francisco on July 15.&lt;/p&gt;
+
+&lt;p&gt;Here are the slides from the talk: &lt;a href=&quot;https://t.co/PLVC6PRhWm&quot;&gt;Elixir in Production&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;For the first Elixit meetup in SF the turnout was great.  There was even a waitlist of 30 people.  It bodes well for the future of Elixir and the community in San Francisco.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
    <title>Hello Myo</title>
    <link href="http://bgmarx.com/2014/12/20/Hello-Myo/"/>
-   <updated>2014-12-20T00:00:00+09:00</updated>
+   <updated>2014-12-20T00:00:00-08:00</updated>
    <id>http://bgmarx.com/2014/12/20/Hello-Myo</id>
    <content type="html">&lt;p&gt;After a year of waiting, the &lt;a href=&quot;https://www.thalmic.com/en/myo/&quot;&gt;Myo&lt;/a&gt; finally arrived.  In the year of waiting for it, there has been many different projects I&amp;#39;ve
 been wanting to undertake.  The initial step: writing a Ruby wrapper to interact with Myo.&lt;/p&gt;
@@ -24,7 +37,7 @@ been wanting to undertake.  The initial step: writing a Ruby wrapper to interact
 
 &lt;p&gt;When I finally received notification that the Myo had shipped, I began to do some cursory research on what libraries existed and if there were any in Ruby.  At the time there weren&amp;#39;t so I created a Ruby gem but hadn&amp;#39;t bothered to push it since I had no physical Myo to interact with.&lt;/p&gt;
 
-&lt;p&gt;Instead I cloned the Python libray (Myo-python) and began to read through it and the iOS sdk.  And tonight when I get home from a trip to Kyoto and Nara, the Myo was waiting.&lt;/p&gt;
+&lt;p&gt;Instead I cloned the Python libray (Myo-python) and began to read through it and the iOS sdk.  And tonight when I got home from a trip to Kyoto and Nara, the Myo was waiting.&lt;/p&gt;
 
 &lt;h4&gt;Simple Beginnings&lt;/h4&gt;
 
