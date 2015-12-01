@@ -10,4 +10,4 @@ I was fortunate enough to give a talk on Elixir in Production at the first Elixi
 
 Here are the slides from the talk: [Elixir in Production](https://t.co/PLVC6PRhWm)
 
-For the first Elixit meetup in SF the turnout was great.  There was even a waitlist of 30 people.  It bodes well for the future of Elixir and the community in San Francisco.
+For the first Elixir meetup in SF the turnout was great.  There was even a waitlist of 30 people.  It bodes well for the future of Elixir and the community in San Francisco.
