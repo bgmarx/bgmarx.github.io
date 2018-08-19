@@ -4,7 +4,7 @@
  <title>Ben Marx</title>
  <link href="http://localhost:4000/atom.xml" rel="self"/>
  <link href="http://localhost:4000/"/>
- <updated>2018-06-07T10:52:26-07:00</updated>
+ <updated>2018-08-19T12:57:22-07:00</updated>
  <id>http://localhost:4000</id>
  <author>
    <name></name>
@@ -33,60 +33,6 @@
 &lt;p&gt;Here are the slides from the talk: &lt;a href=&quot;https://t.co/PLVC6PRhWm&quot;&gt;Elixir in Production&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;For the first Elixir meetup in SF the turnout was great.  There was even a waitlist of 30 people.  It bodes well for the future of Elixir and the community in San Francisco.&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>Hello Myo</title>
-   <link href="http://localhost:4000/2014/12/20/Hello-Myo/"/>
-   <updated>2014-12-20T00:00:00-08:00</updated>
-   <id>http://localhost:4000/2014/12/20/Hello-Myo</id>
-   <content type="html">&lt;p&gt;After a year of waiting, the &lt;a href=&quot;https://www.thalmic.com/en/myo/&quot;&gt;Myo&lt;/a&gt; finally arrived.  In the year of waiting for it, there has been many different projects I’ve
-been wanting to undertake.  The initial step: writing a Ruby wrapper to interact with Myo.&lt;/p&gt;
-
-&lt;h4 id=&quot;myo-ruby-wrapper&quot;&gt;Myo Ruby Wrapper&lt;/h4&gt;
-
-&lt;p&gt;When I finally received notification that the Myo had shipped, I began to do some cursory research on what libraries existed and if there were any in Ruby.  At the time there weren’t so I created a Ruby gem but hadn’t bothered to push it since I had no physical Myo to interact with.&lt;/p&gt;
-
-&lt;p&gt;Instead I cloned the Python libray (Myo-python) and began to read through it and the iOS sdk.  And tonight when I got home from a trip to Kyoto and Nara, the Myo was waiting.&lt;/p&gt;
-
-&lt;h4 id=&quot;simple-beginnings&quot;&gt;Simple Beginnings&lt;/h4&gt;
-
-&lt;p&gt;The &lt;a href=&quot;https://https://github.com/bgmarx/myo-ruby-wrapper&quot;&gt;Myo Ruby Wrapper&lt;/a&gt; is very much a work in progress but I have managed to get be able to read various events from the Myo using the &lt;a href=&quot;https://github.com/mwylde/em-websocket-client&quot;&gt;EM Websocket Client Gem&lt;/a&gt; and parsing the JSON responses.  Each message from the myo is an array like the following:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[
-  &quot;event&quot;,
-  {
-    &quot;myo&quot;:0,
-    &quot;timestamp&quot;:&quot;52593461767&quot;,
-    &quot;type&quot;:&quot;paired&quot;,
-    &quot;version&quot;:[1,1,5,2]
-  }
-]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Each message can be broken into two pieces; first is presumably the notification - &lt;em&gt;event&lt;/em&gt; - and the second is a hash with &lt;em&gt;myo&lt;/em&gt;, &lt;em&gt;timestamp&lt;/em&gt;, &lt;em&gt;type&lt;/em&gt; and &lt;em&gt;version&lt;/em&gt;.  The &lt;em&gt;timestamp&lt;/em&gt; and &lt;em&gt;version&lt;/em&gt; fields are self-explanatory.  I’m not sure what the &lt;em&gt;myo&lt;/em&gt; fields signifies yet.&lt;/p&gt;
-
-&lt;p&gt;The most useful field is the &lt;em&gt;type&lt;/em&gt; field.  This field gives information about what the Myo is doing (or has already done I suppose is more accurate).&lt;/p&gt;
-
-&lt;p&gt;The event types I’ve uncovered so far:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;paired&lt;/em&gt; signifies that the Myo is paired to the bluetooth receiver&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;connected&lt;/em&gt; signifies that the Myo has connected&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;unlocked&lt;/em&gt; signifies that the Myo has received the thumb-to-middle-finger gesture which unlocks the Myo&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;arm_synced&lt;/em&gt; signifies the initial gesture to connect the Myo has been successfully completed.  It also tells the arm that the Myo is on and the x_direction.&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;pose&lt;/em&gt; gives information about the gesture itself.&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;orientation&lt;/em&gt; provides &lt;em&gt;accelermoter&lt;/em&gt;, &lt;em&gt;gyroscope&lt;/em&gt; and and &lt;em&gt;orientation&lt;/em&gt; details.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Right now the gem is very basic and can only provide feedback as to the gesture the Myo has received.  As I’m still adding &lt;em&gt;types&lt;/em&gt;, the Event Machine connection so far is just one big case switch.&lt;/p&gt;
-
-&lt;p&gt;Once the essential fields have been locked down (through some API research no doubt), it can be refactored into something more useful.&lt;/p&gt;
-
-&lt;h3 id=&quot;contribute&quot;&gt;Contribute&lt;/h3&gt;
-&lt;p&gt;I would encourage anyone who is interested in Myo or helping to develop a gem wrapper for Myo to fork or submit a pull request to: &lt;a href=&quot;https://https://github.com/bgmarx/myo-ruby-wrapper&quot;&gt;Myo Ruby Wrapper&lt;/a&gt;&lt;/p&gt;
-
 </content>
  </entry>
  
