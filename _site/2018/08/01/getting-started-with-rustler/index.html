@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title>
+    
+    Getting Started With Rustler
+    
+  </title>
+
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+  <body>
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Ben Marx</a>
+          </h3>
+          <div class="list-group">
+
+            <small>
+              <a href="/about">About</a> /
+              <a href="/projects">Projects</a> /
+              <a href="/talks">Talks</a> /
+              <a href="https://pragprog.com/book/tvmelixir/adopting-elixir" target="_blank">Book</a> /
+              <a href="mailto:ben@bgmarx.com"><i class="fa fa-envelope fa-fw"></i></a> /
+              <a class="list-group-item" href="https://github.com/bgmarx"   target="_blank"><i class="fa fa-github fa-fw"></i></a> /
+              <a class="list-group-item" href="http://instagram.com/bgmarx" target="_blank"><i class="fa fa-instagram fa-fw"></i></a> /
+              <a class="list-group-item" href="https://twitter.com/bgmarx"  target="_blank"><i class="fa fa-twitter fa-fw"></i></a>
+            </small>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Getting Started With Rustler</h1>
+  <span class="post-date">01 Aug 2018</span>
+  <p>Rust is an exciting new language that’s advertised “a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.” It excels in the same areas as C except that it has much more robust guarantees regarding memory and type safety.</p>
+
+<p>When one’s Erlang or Elixir program requires speed or number crunching - or both - NIFs (Native(ly) Implemented Functions) are the solution. NIFs are generally written in C  to take advantage of C’s speed. The tradeoff with NIFs written in C is that the whole BEAM can crash and won’t recover. This is why whenever a NIF is referenced, there’s usually a dire warning that a NIF crash will crash the whole VM. With Rust, because of its memory safety and static types, the chance of catastrophic failure is much lower.</p>
+
+<p>Here’s the repo to follow along with - <a href="https://github.com/bgmarx/nifty">nifty</a>.</p>
+
+<p>Getting started with Rustler is straightforward. Add <code class="highlighter-rouge">rustler</code> to <code class="highlighter-rouge">mix.exs</code>  like any other dependency:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  defp deps do
+    [
+       ...snip...
+      {:rustler, "~&gt; 0.18"}
+    ]
+  end
+</code></pre></div></div>
+
+<p>Then, from the command line, run <code class="highlighter-rouge">mix deps.get</code> and once the dependencies have been fetched, run <code class="highlighter-rouge">mix rustler.new</code>.</p>
+
+<p>This command sets up both the Rust directory structure and also the interface between Elixir and the Rust NIF. You can follow the output below:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/nifty&gt; mix rustler.new
+==&gt; rustler
+Compiling 2 files (.erl)
+/usr/lib/erlang/lib/parsetools-2.1.2/include/yeccpre.hrl:60: Warning: erlang:get_stacktrace/0: deprecated; use the new try/catch syntax for retrieving the stack backtrace
+Compiling 6 files (.ex)
+Generated rustler app
+==&gt; nifty
+This is the name of the Elixir module the NIF module will be registered to.
+Module name &gt; Nifty
+This is the name used for the generated Rust crate. The default is most likely fine.
+Library name (nifty) &gt;
+* creating native/nifty/README.md
+* creating native/nifty/Cargo.toml
+* creating native/nifty/src/lib.rs
+Ready to go! See /niftynative/nifty/README.md for further instructions.
+</code></pre></div></div>
+
+<p>The generated README.md explains things clearly and succinctly. Let’s walk through it. The first thing required is to add the Rust compiler and the just-created crate in <code class="highlighter-rouge">mix.exs</code>. First, in the <code class="highlighter-rouge">project</code> function:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  def project do
+    [
+	...snip...
+      compilers: [:rustler] ++ Mix.compilers,
+      rustler_crates: rustler_crates(),
+      ...snip...
+    ]
+  end
+</code></pre></div></div>
+
+<p>Then, create a new private function called <code class="highlighter-rouge">rustler_crates</code> like so:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  defp rustler_crates do
+    [nifty: [
+      path: "native/nifty",
+      mode: (if Mix.env == :prod, do: :release, else: :debug),
+    ]]
+  end
+</code></pre></div></div>
+
+<p>To run the Rust tests alongside the Elixir tests when you run <code class="highlighter-rouge">mix test</code> add an alias:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  defp aliases do
+    [
+      "test": ["cmd cd native/nifty &amp;&amp; cargo test", "test"],
+    ]
+  end
+</code></pre></div></div>
+<p>Now, all that’s left to do get everything up and running is to <code class="highlighter-rouge">use</code> Rustler in the Elixir module and add error handling. For simplicity, the Rust function adds two numbers together.  The Elixir function <code class="highlighter-rouge">add/2</code> raises an error if for whatever reason it can’t load the Rust crate.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule Nifty do
+  use Rustler, otp_app: :nifty, crate: :nifty
+  @moduledoc """
+  Documentation for Nifty.
+  """
+
+  def add(_a, _b), do: :erlang.nif_error(:nif_not_loaded)
+end
+</code></pre></div></div>
+
+<p>Now, let’s turn to the Rust code which lives in <code class="highlighter-rouge">native/nifty/src/lib.rs</code>.  First, let’s take a look at the <code class="highlighter-rouge">add</code> function.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fn add&lt;'a&gt;(env: Env&lt;'a&gt;, args: &amp;[Term&lt;'a&gt;]) -&gt; NifResult&lt;Term&lt;'a&gt;&gt; {
+    let num1: i64 = try!(args[0].decode());
+    let num2: i64 = try!(args[1].decode());
+
+    Ok((atoms::ok(), num1 + num2).encode(env))
+}
+</code></pre></div></div>
+
+<p>First, the function takes two arguments, the <code class="highlighter-rouge">env</code> which is passed in by Rustler and a reference to some args and it returns a <code class="highlighter-rouge">NifResult</code>. The two inputs and the output all have the same lifetime as denoted by <code class="highlighter-rouge">'a</code>. Lifetimes are the way by which Rust can guarantee memory safety. The compiler guarantees that all references are valid.</p>
+
+<p>The body of the function should be immediately readable, but it says to try to parse the arguments passed in and set them to be type <code class="highlighter-rouge">i64</code>. Then the two integers are summed and returned as a two-tuple in the form of <code class="highlighter-rouge">{:ok, total}</code>.</p>
+
+<p>At this point, this should work. It’s verifiable by running <code class="highlighter-rouge">iex -S mix</code> and then from the prompt run <code class="highlighter-rouge">Nifty.add(1,2)</code>. It’ll return <code class="highlighter-rouge">{:ok 3}</code>.</p>
+
+<p>What happens when you pass non-integers to the function. Let’s find out:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex(3)&gt; Nifty.add 1, :a
+** (ArgumentError) argument error
+    (nifty) Nifty.add(1, :a)
+</code></pre></div></div>
+
+<p>That’s pretty much what one would expect.</p>
+
+<p>To add more functions, create the function and then add it to the <code class="highlighter-rouge">rustler_export_nifs!</code> macro like so:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rustler_export_nifs! {
+    "Elixir.Nifty",
+    [("add", 2, add), ("sub", 2, sub)],
+    None
+}
+</code></pre></div></div>
+
+<p>In this case, there’s a function added named <code class="highlighter-rouge">sub</code> that takes two arguments and is called <code class="highlighter-rouge">sub</code> in both Rust and Elixir.</p>
+
+<p>And that’s all there is to it to getting started with Rustler. In upcoming posts, I’ll focus on benchmarking, dirty schedulers and see if we can make Rust cause weird behavior on the BEAM.</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2015/11/12/Elixir-Meetup-Nerves-Up-and-Running/">
+            Elixir Meetup - Nerves Up and Running
+            <small>12 Nov 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/07/28/Elixir-Meetup-Talk/">
+            Elixir Meetup - Elixir in Production
+            <small>28 Jul 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+      </div>
+    </div>
+  </body>
+</html>
