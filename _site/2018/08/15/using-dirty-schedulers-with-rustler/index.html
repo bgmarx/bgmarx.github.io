@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title>
+    
+    Using Dirty Schedulers with Rust
+    
+  </title>
+
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+  <body>
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Ben Marx</a>
+          </h3>
+          <div class="list-group">
+
+            <small>
+              <a href="/about">About</a> /
+              <a href="/projects">Projects</a> /
+              <a href="/talks">Talks</a> /
+              <a href="https://pragprog.com/book/tvmelixir/adopting-elixir" target="_blank">Book</a> /
+              <a href="mailto:ben@bgmarx.com"><i class="fa fa-envelope fa-fw"></i></a> /
+              <a class="list-group-item" href="https://github.com/bgmarx"   target="_blank"><i class="fa fa-github fa-fw"></i></a> /
+              <a class="list-group-item" href="http://instagram.com/bgmarx" target="_blank"><i class="fa fa-instagram fa-fw"></i></a> /
+              <a class="list-group-item" href="https://twitter.com/bgmarx"  target="_blank"><i class="fa fa-twitter fa-fw"></i></a>
+            </small>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Using Dirty Schedulers with Rust</h1>
+  <span class="post-date">15 Aug 2018</span>
+  <p>In an earlier post, I showed how to get started using <a href="/2018/08/01/getting-started-with-rustler/">Rust NIFs with Rustler</a>. We’ll continue using the same <a href="http://github.com/bgmarx/nifty">Nifty repo</a>. In this post, we’ll be using the <code class="highlighter-rouge">dirty_schedulers</code> branch. Recall that there are two types of dirty shedulers - CPU-bound and IO-bound. In Erlang, these are defined as <code class="highlighter-rouge">ERL_NIF_DIRTY_JOB_CPU_BOUND</code> and <code class="highlighter-rouge">ERL_NIF_DIRTY_JOB_IO_BOUND</code>.</p>
+
+<p>In Rustler, they’re similarly delimited with an <code class="highlighter-rouge">enum</code> <a href="https://github.com/hansihe/rustler/blob/b6578ea3999fd42f377c2497d8fae0bd629b927d/rustler/src/schedule.rs">here</a>:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">pub</span> <span class="k">enum</span> <span class="n">SchedulerFlags</span> <span class="p">{</span>
+    <span class="n">Normal</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">DirtyCpu</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">DirtyIo</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>As you can see, the names are different, but the idea is the same. A “clean” NIF is a <code class="highlighter-rouge">Normal</code> NIF, and the dirty scheduler types are <code class="highlighter-rouge">DirtyCpu</code> and <code class="highlighter-rouge">DirtyIo</code>.  To use the dirty schedulers, bring the <code class="highlighter-rouge">SchedulerFlags</code> module with <code class="highlighter-rouge">use rustler::schedule::SchedulerFlags</code>. You can see this in <code class="highlighter-rouge">lib.rs</code> in the Nifty repo. In <a href="https://github.com/hansihe/rustler/blob/b6578ea3999fd42f377c2497d8fae0bd629b927d/rustler_tests/src/test_dirty.rs">dirty_test.rs</a>, there are two somewhat contrived tests that illustrate both types of dirty schedulers.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">pub</span> <span class="k">fn</span> <span class="n">dirty_cpu</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span><span class="p">(</span><span class="n">env</span><span class="p">:</span> <span class="n">Env</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">[</span><span class="n">Term</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span><span class="p">])</span> <span class="k">-&gt;</span> <span class="n">NifResult</span><span class="o">&lt;</span><span class="n">Term</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">duration</span> <span class="o">=</span> <span class="nn">time</span><span class="p">::</span><span class="nn">Duration</span><span class="p">::</span><span class="nf">from_millis</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+    <span class="p">::</span><span class="nn">std</span><span class="p">::</span><span class="nn">thread</span><span class="p">::</span><span class="nf">sleep</span><span class="p">(</span><span class="n">duration</span><span class="p">);</span>
+
+    <span class="nf">Ok</span><span class="p">(</span><span class="nn">atoms</span><span class="p">::</span><span class="nf">ok</span><span class="p">()</span><span class="nf">.encode</span><span class="p">(</span><span class="n">env</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="k">pub</span> <span class="k">fn</span> <span class="n">dirty_io</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span><span class="p">(</span><span class="n">env</span><span class="p">:</span> <span class="n">Env</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">[</span><span class="n">Term</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span><span class="p">])</span> <span class="k">-&gt;</span> <span class="n">NifResult</span><span class="o">&lt;</span><span class="n">Term</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">duration</span> <span class="o">=</span> <span class="nn">time</span><span class="p">::</span><span class="nn">Duration</span><span class="p">::</span><span class="nf">from_millis</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+    <span class="p">::</span><span class="nn">std</span><span class="p">::</span><span class="nn">thread</span><span class="p">::</span><span class="nf">sleep</span><span class="p">(</span><span class="n">duration</span><span class="p">);</span>
+
+    <span class="nf">Ok</span><span class="p">(</span><span class="nn">atoms</span><span class="p">::</span><span class="nf">ok</span><span class="p">()</span><span class="nf">.encode</span><span class="p">(</span><span class="n">env</span><span class="p">))</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Both of these tests do the same thing - they sleep for 100 milliseconds and return an <code class="highlighter-rouge">:ok</code> atom. 100 milliseconds is 100 times the 1-millisecond Erlang scheduler preemptive threshold.</p>
+
+<p>I’ve yet to come up with a good Dirty IO example, but the Dirty CPU example listed above works well enough to get the dirty schedulers to do some work.</p>
+
+<p>There’s one thing more to do. Add the function - which we’re calling <code class="highlighter-rouge">timed_cpu</code> to the <code class="highlighter-rouge">rustler_export_nifs!</code> macro like so:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">rustler_export_nifs!</span> <span class="p">{</span>
+    <span class="s">"Elixir.Nifty"</span><span class="p">,</span>
+    <span class="p">[(</span><span class="s">"add"</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">add</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">"sub"</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sub</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">"timed_cpu"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">timed_cpu</span><span class="p">,</span> <span class="nn">SchedulerFlags</span><span class="p">::</span><span class="n">DirtyCpu</span><span class="p">)],</span>
+    <span class="nb">None</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The striking distinction is that you need to specify  <code class="highlighter-rouge">SchedulerFlags::DirtyCpu</code>. For completeness, here’s the function:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fn</span> <span class="n">timed_cpu</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span><span class="p">(</span><span class="n">env</span><span class="p">:</span> <span class="n">Env</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">[</span><span class="n">Term</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span><span class="p">])</span> <span class="k">-&gt;</span> <span class="n">NifResult</span><span class="o">&lt;</span><span class="n">Term</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">duration</span> <span class="o">=</span> <span class="nn">time</span><span class="p">::</span><span class="nn">Duration</span><span class="p">::</span><span class="nf">from_millis</span><span class="p">(</span><span class="mi">1</span><span class="n">_000</span><span class="p">);</span>
+    <span class="p">::</span><span class="nn">std</span><span class="p">::</span><span class="nn">thread</span><span class="p">::</span><span class="nf">sleep</span><span class="p">(</span><span class="n">duration</span><span class="p">);</span>
+
+    <span class="nf">Ok</span><span class="p">(</span><span class="nn">atoms</span><span class="p">::</span><span class="nf">ok</span><span class="p">()</span><span class="nf">.encode</span><span class="p">(</span><span class="n">env</span><span class="p">))</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>It does the exact same thing as the Rustler test except that it sleeps for an entire second - an inordinate amount of time for a scheduler.  Now, in <code class="highlighter-rouge">nifty.ex</code>, add the following functions:</p>
+
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="n">timed_cpu</span><span class="p">(),</span> <span class="k">do</span><span class="p">:</span> <span class="ss">:erlang</span><span class="o">.</span><span class="n">nif_error</span><span class="p">(</span><span class="ss">:nif_not_loaded</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="n">spawn_dirty_cpu_and_receive</span><span class="p">(</span><span class="n">num_to_spawn</span> <span class="p">\\</span> <span class="m">1</span><span class="p">)</span> <span class="k">do</span>
+    <span class="n">range</span> <span class="o">=</span> <span class="m">1</span><span class="o">..</span><span class="n">num_to_spawn</span>
+    <span class="n">process</span> <span class="o">=</span> <span class="n">self</span><span class="p">()</span>
+    <span class="no">Enum</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">range</span><span class="p">,</span> <span class="k">fn</span> <span class="p">(</span><span class="n">_elem</span><span class="p">)</span> <span class="o">-&gt;</span>
+      <span class="n">spawn_link</span> <span class="k">fn</span> <span class="o">-&gt;</span>
+        <span class="p">(</span><span class="n">send</span> <span class="n">process</span><span class="p">,</span> <span class="p">{</span><span class="n">self</span><span class="p">(),</span> <span class="n">timed_cpu</span><span class="p">()})</span>
+      <span class="k">end</span>
+    <span class="k">end</span><span class="p">)</span>
+    <span class="o">|&gt;</span> <span class="no">Enum</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">fn</span> <span class="p">(</span><span class="n">pid</span><span class="p">)</span> <span class="o">-&gt;</span>
+      <span class="k">receive</span> <span class="k">do</span> <span class="p">{</span> <span class="o">^</span><span class="n">pid</span><span class="p">,</span>  <span class="n">result</span> <span class="p">}</span> <span class="o">-&gt;</span> <span class="n">result</span> <span class="k">end</span>
+    <span class="k">end</span><span class="p">)</span>
+  <span class="k">end</span>
+</code></pre></div></div>
+<p><code class="highlighter-rouge">timed_cpu/0</code> functions in the same way as <code class="highlighter-rouge">add/2</code> and <code class="highlighter-rouge">sub/2</code>. These functions are passed to the Rust crate and if for whatever reason they’re not found a <code class="highlighter-rouge">:nif_not_loaded</code> Erlang error is returned. The <code class="highlighter-rouge">spawn_dirty_io_and_receive/1</code> function spawns some number of processes, calls <code class="highlighter-rouge">timed_cpu/0</code> and waits to receive the message as denoted by the pinned pid.</p>
+
+<p>The sole purpose of this function is to get the dotted lines representing the schedulers on the observer to move. Start the library with <code class="highlighter-rouge">iex -S mix</code> and from the prompt run <code class="highlighter-rouge">iex(2)&gt; Nifty.spawn_dirty_io(5)</code>. This spawns five processes which should take a total of five seconds to return with a list of <code class="highlighter-rouge">:ok</code> atoms.</p>
+
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">iex</span><span class="p">(</span><span class="m">3</span><span class="p">)</span><span class="o">&gt;</span> <span class="no">Nifty</span><span class="o">.</span><span class="n">spawn_dirty_io_and_receive</span><span class="p">(</span><span class="m">5</span><span class="p">)</span>
+<span class="p">[</span><span class="ss">:ok</span><span class="p">,</span> <span class="ss">:ok</span><span class="p">,</span> <span class="ss">:ok</span><span class="p">,</span> <span class="ss">:ok</span><span class="p">,</span> <span class="ss">:ok</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Load up the observer and let’s see if we can get the dirty schedulers to activate.</p>
+
+<p><img src="/public/images/dirty-cpu-observer.png" alt="drawing" style="width:600px;" /></p>
+
+<p>Hey, look at that. It worked. And it used two of the four schedulers.</p>
+
+<p>What’s interesting is that if you go back to <code class="highlighter-rouge">lib.rs</code> and change <code class="highlighter-rouge">SchedulerFlags::DirtyCpu</code> to <code class="highlighter-rouge">SchedulerFlags::DirtyIo</code> and run <code class="highlighter-rouge">spawn_dirty_cpu_and_receive/1</code> again with the observer running, you’ll see that none of the dirty schedulers are activated.</p>
+
+<p><img src="/public/images/dirty-io-observer.png" alt="drawing" style="width:600px;" /></p>
+
+<p>That makes sense and I’ll figure out a way to simulate dirty IO in a future post.</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2018/08/05/dirty-schedulers/">
+            Dirty Schedulers
+            <small>05 Aug 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/08/01/getting-started-with-rustler/">
+            Getting Started With Rustler
+            <small>01 Aug 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/11/12/Elixir-Meetup-Nerves-Up-and-Running/">
+            Elixir Meetup - Nerves Up and Running
+            <small>12 Nov 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+      </div>
+    </div>
+  </body>
+</html>

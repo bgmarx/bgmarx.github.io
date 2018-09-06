@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
   <title>
     
-    Elixir Meetup - Elixir in Production
+    Dirty Schedulers
     
   </title>
 
@@ -46,13 +46,20 @@
 
       <div class="container content">
         <div class="post">
-  <h1 class="post-title">Elixir Meetup - Elixir in Production</h1>
-  <span class="post-date">28 Jul 2015</span>
-  <p>I was fortunate enough to give a talk on Elixir in Production at the first Elixir meetup in San Francisco on July 15.</p>
+  <h1 class="post-title">Dirty Schedulers</h1>
+  <span class="post-date">05 Aug 2018</span>
+  <p>Dirty schedulers officially arrived in OTP 21 and for me they’re one of the most exciting features to land in OTP 21. In this post, we’ll cover what dirty schedulers are, why they came about and how they make interoperability with NIFs safer and open to more applications.</p>
 
-<p>Here are the slides from the talk: <a href="https://t.co/PLVC6PRhWm">Elixir in Production</a></p>
+<h5 id="how-schedulers-work">How Schedulers Work</h5>
 
-<p>For the first Elixir meetup in SF the turnout was great.  There was even a waitlist of 30 people.  It bodes well for the future of Elixir and the community in San Francisco.</p>
+<p>To understand why dirty schedulers behave the way they do and their reason for existing, we first need to discuss how schedulers work on the BEAM.</p>
+
+<h5 id="dirty-schedulers">Dirty Schedulers</h5>
+<blockquote>
+  <p>“Due to heroic efforts by Steve Vinoski, Rickard Green, and Sverker Eriksson, we have an (experimental) so-called dirty-scheduler (DS) NIF API in the Erlang runtime, which has been somewhat stable since release 17.3.”
+ https://medium.com/@jlouis666/erlang-dirty-scheduler-overhead-6e1219dcc7</p>
+</blockquote>
+
 
 </div>
 
@@ -71,18 +78,18 @@
     
       <li>
         <h3>
-          <a href="/2018/08/05/dirty-schedulers/">
-            Dirty Schedulers
-            <small>05 Aug 2018</small>
+          <a href="/2018/08/01/getting-started-with-rustler/">
+            Getting Started With Rustler
+            <small>01 Aug 2018</small>
           </a>
         </h3>
       </li>
     
       <li>
         <h3>
-          <a href="/2018/08/01/getting-started-with-rustler/">
-            Getting Started With Rustler
-            <small>01 Aug 2018</small>
+          <a href="/2015/11/12/Elixir-Meetup-Nerves-Up-and-Running/">
+            Elixir Meetup - Nerves Up and Running
+            <small>12 Nov 2015</small>
           </a>
         </h3>
       </li>
