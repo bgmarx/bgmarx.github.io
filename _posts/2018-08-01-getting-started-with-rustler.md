@@ -15,7 +15,7 @@ Here's the repo to follow along with - [nifty](https://github.com/bgmarx/nifty).
 
 Getting started with Rustler is straightforward. Add `rustler` to `mix.exs`  like any other dependency:
 
-````
+````elixir
   defp deps do
     [
        ...snip...
@@ -28,7 +28,7 @@ Then, from the command line, run `mix deps.get` and once the dependencies have b
 
 This command sets up both the Rust directory structure and also the interface between Elixir and the Rust NIF. You can follow the output below:
 
-````
+````console
 /nifty> mix rustler.new
 ==> rustler
 Compiling 2 files (.erl)
@@ -48,7 +48,7 @@ Ready to go! See /niftynative/nifty/README.md for further instructions.
 
 The generated README.md explains things clearly and succinctly. Let's walk through it. The first thing required is to add the Rust compiler and the just-created crate in `mix.exs`. First, in the `project` function:
 
-````
+````elixir
   def project do
     [
 	...snip...
@@ -61,7 +61,7 @@ The generated README.md explains things clearly and succinctly. Let's walk throu
 
 Then, create a new private function called `rustler_crates` like so:
 
-````
+````elixir
   defp rustler_crates do
     [nifty: [
       path: "native/nifty",
@@ -72,7 +72,7 @@ Then, create a new private function called `rustler_crates` like so:
 
 To run the Rust tests alongside the Elixir tests when you run `mix test` add an alias:
 
-````
+````elixir
   defp aliases do
     [
       "test": ["cmd cd native/nifty && cargo test", "test"],
@@ -80,7 +80,8 @@ To run the Rust tests alongside the Elixir tests when you run `mix test` add an 
   end
 ````
 Now, all that's left to do get everything up and running is to `use` Rustler in the Elixir module and add error handling. For simplicity, the Rust function adds two numbers together.  The Elixir function `add/2` raises an error if for whatever reason it can't load the Rust crate.
-````
+
+````elixir
 defmodule Nifty do
   use Rustler, otp_app: :nifty, crate: :nifty
   @moduledoc """
@@ -93,7 +94,7 @@ end
 
 Now, let's turn to the Rust code which lives in `native/nifty/src/lib.rs`.  First, let's take a look at the `add` function.
 
-````
+````rust
 fn add<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let num1: i64 = try!(args[0].decode());
     let num2: i64 = try!(args[1].decode());
@@ -110,7 +111,7 @@ At this point, this should work. It's verifiable by running `iex -S mix` and the
 
 What happens when you pass non-integers to the function. Let's find out:
 
-````
+````rust
 iex(3)> Nifty.add 1, :a
 ** (ArgumentError) argument error
     (nifty) Nifty.add(1, :a)
@@ -120,7 +121,7 @@ That's pretty much what one would expect.
 
 To add more functions, create the function and then add it to the `rustler_export_nifs!` macro like so:
 
-````
+````rust
 rustler_export_nifs! {
     "Elixir.Nifty",
     [("add", 2, add), ("sub", 2, sub)],

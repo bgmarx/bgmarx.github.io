@@ -17,4 +17,3 @@ To understand why dirty schedulers behave the way they do and their reason for e
 ##### Dirty Schedulers
 > “Due to heroic efforts by Steve Vinoski, Rickard Green, and Sverker Eriksson, we have an (experimental) so-called dirty-scheduler (DS) NIF API in the Erlang runtime, which has been somewhat stable since release 17.3.”
 >  https://medium.com/@jlouis666/erlang-dirty-scheduler-overhead-6e1219dcc7
-    

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Using Dirty Schedulers with Rust
+title: Using Dirty Schedulers with Rustler
 tags:
 - Elixir
 - Dirty Scheduler

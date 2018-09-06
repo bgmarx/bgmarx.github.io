@@ -56,84 +56,85 @@
 
 <p>Getting started with Rustler is straightforward. Add <code class="highlighter-rouge">rustler</code> to <code class="highlighter-rouge">mix.exs</code>  like any other dependency:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  defp deps do
-    [
-       ...snip...
-      {:rustler, "~&gt; 0.18"}
-    ]
-  end
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">defp</span> <span class="n">deps</span> <span class="k">do</span>
+    <span class="p">[</span>
+       <span class="o">...</span><span class="n">snip</span><span class="o">...</span>
+      <span class="p">{</span><span class="ss">:rustler</span><span class="p">,</span> <span class="sd">"</span><span class="s2">~&gt; 0.18"</span><span class="p">}</span>
+    <span class="p">]</span>
+  <span class="k">end</span>
 </code></pre></div></div>
 
 <p>Then, from the command line, run <code class="highlighter-rouge">mix deps.get</code> and once the dependencies have been fetched, run <code class="highlighter-rouge">mix rustler.new</code>.</p>
 
 <p>This command sets up both the Rust directory structure and also the interface between Elixir and the Rust NIF. You can follow the output below:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/nifty&gt; mix rustler.new
-==&gt; rustler
-Compiling 2 files (.erl)
-/usr/lib/erlang/lib/parsetools-2.1.2/include/yeccpre.hrl:60: Warning: erlang:get_stacktrace/0: deprecated; use the new try/catch syntax for retrieving the stack backtrace
-Compiling 6 files (.ex)
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">/nifty&gt;</span> mix rustler.new
+<span class="gp">==&gt;</span> rustler
+<span class="go">Compiling 2 files (.erl)
+</span><span class="gp">/usr/lib/erlang/lib/parsetools-2.1.2/include/yeccpre.hrl:60: Warning: erlang:get_stacktrace/0: deprecated;</span> use the new try/catch syntax <span class="k">for </span>retrieving the stack backtrace
+<span class="go">Compiling 6 files (.ex)
 Generated rustler app
-==&gt; nifty
-This is the name of the Elixir module the NIF module will be registered to.
-Module name &gt; Nifty
-This is the name used for the generated Rust crate. The default is most likely fine.
-Library name (nifty) &gt;
-* creating native/nifty/README.md
+</span><span class="gp">==&gt;</span> nifty
+<span class="go">This is the name of the Elixir module the NIF module will be registered to.
+</span><span class="gp">Module name &gt;</span> Nifty
+<span class="go">This is the name used for the generated Rust crate. The default is most likely fine.
+</span><span class="gp">Library name (nifty) &gt;</span>
+<span class="go">* creating native/nifty/README.md
 * creating native/nifty/Cargo.toml
 * creating native/nifty/src/lib.rs
 Ready to go! See /niftynative/nifty/README.md for further instructions.
-</code></pre></div></div>
+</span></code></pre></div></div>
 
 <p>The generated README.md explains things clearly and succinctly. Let’s walk through it. The first thing required is to add the Rust compiler and the just-created crate in <code class="highlighter-rouge">mix.exs</code>. First, in the <code class="highlighter-rouge">project</code> function:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  def project do
-    [
-	...snip...
-      compilers: [:rustler] ++ Mix.compilers,
-      rustler_crates: rustler_crates(),
-      ...snip...
-    ]
-  end
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="n">project</span> <span class="k">do</span>
+    <span class="p">[</span>
+	<span class="o">...</span><span class="n">snip</span><span class="o">...</span>
+      <span class="ss">compilers:</span> <span class="p">[</span><span class="ss">:rustler</span><span class="p">]</span> <span class="o">++</span> <span class="no">Mix</span><span class="o">.</span><span class="n">compilers</span><span class="p">,</span>
+      <span class="ss">rustler_crates:</span> <span class="n">rustler_crates</span><span class="p">(),</span>
+      <span class="o">...</span><span class="n">snip</span><span class="o">...</span>
+    <span class="p">]</span>
+  <span class="k">end</span>
 </code></pre></div></div>
 
 <p>Then, create a new private function called <code class="highlighter-rouge">rustler_crates</code> like so:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  defp rustler_crates do
-    [nifty: [
-      path: "native/nifty",
-      mode: (if Mix.env == :prod, do: :release, else: :debug),
-    ]]
-  end
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">defp</span> <span class="n">rustler_crates</span> <span class="k">do</span>
+    <span class="p">[</span><span class="ss">nifty:</span> <span class="p">[</span>
+      <span class="ss">path:</span> <span class="sd">"</span><span class="s2">native/nifty"</span><span class="p">,</span>
+      <span class="ss">mode:</span> <span class="p">(</span><span class="k">if</span> <span class="no">Mix</span><span class="o">.</span><span class="n">env</span> <span class="o">==</span> <span class="ss">:prod</span><span class="p">,</span> <span class="k">do</span><span class="p">:</span> <span class="ss">:release</span><span class="p">,</span> <span class="k">else</span><span class="p">:</span> <span class="ss">:debug</span><span class="p">),</span>
+    <span class="p">]]</span>
+  <span class="k">end</span>
 </code></pre></div></div>
 
 <p>To run the Rust tests alongside the Elixir tests when you run <code class="highlighter-rouge">mix test</code> add an alias:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  defp aliases do
-    [
-      "test": ["cmd cd native/nifty &amp;&amp; cargo test", "test"],
-    ]
-  end
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">defp</span> <span class="n">aliases</span> <span class="k">do</span>
+    <span class="p">[</span>
+      <span class="sd">"</span><span class="s2">test"</span><span class="p">:</span> <span class="p">[</span><span class="sd">"</span><span class="s2">cmd cd native/nifty &amp;&amp; cargo test"</span><span class="p">,</span> <span class="sd">"</span><span class="s2">test"</span><span class="p">],</span>
+    <span class="p">]</span>
+  <span class="k">end</span>
 </code></pre></div></div>
 <p>Now, all that’s left to do get everything up and running is to <code class="highlighter-rouge">use</code> Rustler in the Elixir module and add error handling. For simplicity, the Rust function adds two numbers together.  The Elixir function <code class="highlighter-rouge">add/2</code> raises an error if for whatever reason it can’t load the Rust crate.</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule Nifty do
-  use Rustler, otp_app: :nifty, crate: :nifty
-  @moduledoc """
-  Documentation for Nifty.
-  """
 
-  def add(_a, _b), do: :erlang.nif_error(:nif_not_loaded)
-end
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">defmodule</span> <span class="no">Nifty</span> <span class="k">do</span>
+  <span class="kn">use</span> <span class="no">Rustler</span><span class="p">,</span> <span class="ss">otp_app:</span> <span class="ss">:nifty</span><span class="p">,</span> <span class="ss">crate:</span> <span class="ss">:nifty</span>
+  <span class="nv">@moduledoc</span> <span class="sd">"""
+  Documentation for Nifty.
+  """</span>
+
+  <span class="k">def</span> <span class="n">add</span><span class="p">(</span><span class="n">_a</span><span class="p">,</span> <span class="n">_b</span><span class="p">),</span> <span class="k">do</span><span class="p">:</span> <span class="ss">:erlang</span><span class="o">.</span><span class="n">nif_error</span><span class="p">(</span><span class="ss">:nif_not_loaded</span><span class="p">)</span>
+<span class="k">end</span>
 </code></pre></div></div>
 
 <p>Now, let’s turn to the Rust code which lives in <code class="highlighter-rouge">native/nifty/src/lib.rs</code>.  First, let’s take a look at the <code class="highlighter-rouge">add</code> function.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fn add&lt;'a&gt;(env: Env&lt;'a&gt;, args: &amp;[Term&lt;'a&gt;]) -&gt; NifResult&lt;Term&lt;'a&gt;&gt; {
-    let num1: i64 = try!(args[0].decode());
-    let num2: i64 = try!(args[1].decode());
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fn</span> <span class="n">add</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span><span class="p">(</span><span class="n">env</span><span class="p">:</span> <span class="n">Env</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">[</span><span class="n">Term</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span><span class="p">])</span> <span class="k">-&gt;</span> <span class="n">NifResult</span><span class="o">&lt;</span><span class="n">Term</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">num1</span><span class="p">:</span> <span class="nb">i64</span> <span class="o">=</span> <span class="nd">try!</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="nf">.decode</span><span class="p">());</span>
+    <span class="k">let</span> <span class="n">num2</span><span class="p">:</span> <span class="nb">i64</span> <span class="o">=</span> <span class="nd">try!</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="nf">.decode</span><span class="p">());</span>
 
-    Ok((atoms::ok(), num1 + num2).encode(env))
-}
+    <span class="nf">Ok</span><span class="p">((</span><span class="nn">atoms</span><span class="p">::</span><span class="nf">ok</span><span class="p">(),</span> <span class="n">num1</span> <span class="o">+</span> <span class="n">num2</span><span class="p">)</span><span class="nf">.encode</span><span class="p">(</span><span class="n">env</span><span class="p">))</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
 <p>First, the function takes two arguments, the <code class="highlighter-rouge">env</code> which is passed in by Rustler and a reference to some args and it returns a <code class="highlighter-rouge">NifResult</code>. The two inputs and the output all have the same lifetime as denoted by <code class="highlighter-rouge">'a</code>. Lifetimes are the way by which Rust can guarantee memory safety. The compiler guarantees that all references are valid.</p>
@@ -144,20 +145,20 @@ end
 
 <p>What happens when you pass non-integers to the function. Let’s find out:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex(3)&gt; Nifty.add 1, :a
-** (ArgumentError) argument error
-    (nifty) Nifty.add(1, :a)
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">iex</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">Nifty</span><span class="py">.add</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="n">a</span>
+<span class="o">**</span> <span class="p">(</span><span class="n">ArgumentError</span><span class="p">)</span> <span class="n">argument</span> <span class="nf">error</span>
+    <span class="p">(</span><span class="n">nifty</span><span class="p">)</span> <span class="n">Nifty</span><span class="nf">.add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="n">a</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>That’s pretty much what one would expect.</p>
 
 <p>To add more functions, create the function and then add it to the <code class="highlighter-rouge">rustler_export_nifs!</code> macro like so:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rustler_export_nifs! {
-    "Elixir.Nifty",
-    [("add", 2, add), ("sub", 2, sub)],
-    None
-}
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">rustler_export_nifs!</span> <span class="p">{</span>
+    <span class="s">"Elixir.Nifty"</span><span class="p">,</span>
+    <span class="p">[(</span><span class="s">"add"</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">add</span><span class="p">),</span> <span class="p">(</span><span class="s">"sub"</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sub</span><span class="p">)],</span>
+    <span class="nb">None</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
 <p>In this case, there’s a function added named <code class="highlighter-rouge">sub</code> that takes two arguments and is called <code class="highlighter-rouge">sub</code> in both Rust and Elixir.</p>
@@ -173,17 +174,8 @@ end
       <li>
         <h3>
           <a href="/2018/08/15/using-dirty-schedulers-with-rustler/">
-            Using Dirty Schedulers with Rust
+            Using Dirty Schedulers with Rustler
             <small>15 Aug 2018</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2018/08/05/dirty-schedulers/">
-            Dirty Schedulers
-            <small>05 Aug 2018</small>
           </a>
         </h3>
       </li>
@@ -193,6 +185,15 @@ end
           <a href="/2015/11/12/Elixir-Meetup-Nerves-Up-and-Running/">
             Elixir Meetup - Nerves Up and Running
             <small>12 Nov 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/07/28/Elixir-Meetup-Talk/">
+            Elixir Meetup - Elixir in Production
+            <small>28 Jul 2015</small>
           </a>
         </h3>
       </li>

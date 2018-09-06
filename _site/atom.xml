@@ -4,7 +4,7 @@
  <title>Ben Marx</title>
  <link href="http://localhost:4000/atom.xml" rel="self"/>
  <link href="http://localhost:4000/"/>
- <updated>2018-09-05T22:43:30-07:00</updated>
+ <updated>2018-09-06T13:32:55-07:00</updated>
  <id>http://localhost:4000</id>
  <author>
    <name></name>
@@ -13,7 +13,7 @@
 
  
  <entry>
-   <title>Using Dirty Schedulers with Rust</title>
+   <title>Using Dirty Schedulers with Rustler</title>
    <link href="http://localhost:4000/2018/08/15/using-dirty-schedulers-with-rustler/"/>
    <updated>2018-08-15T00:00:00-07:00</updated>
    <id>http://localhost:4000/2018/08/15/using-dirty-schedulers-with-rustler</id>
@@ -108,26 +108,6 @@
  </entry>
  
  <entry>
-   <title>Dirty Schedulers</title>
-   <link href="http://localhost:4000/2018/08/05/dirty-schedulers/"/>
-   <updated>2018-08-05T00:00:00-07:00</updated>
-   <id>http://localhost:4000/2018/08/05/dirty-schedulers</id>
-   <content type="html">&lt;p&gt;Dirty schedulers officially arrived in OTP 21 and for me they’re one of the most exciting features to land in OTP 21. In this post, we’ll cover what dirty schedulers are, why they came about and how they make interoperability with NIFs safer and open to more applications.&lt;/p&gt;
-
-&lt;h5 id=&quot;how-schedulers-work&quot;&gt;How Schedulers Work&lt;/h5&gt;
-
-&lt;p&gt;To understand why dirty schedulers behave the way they do and their reason for existing, we first need to discuss how schedulers work on the BEAM.&lt;/p&gt;
-
-&lt;h5 id=&quot;dirty-schedulers&quot;&gt;Dirty Schedulers&lt;/h5&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;“Due to heroic efforts by Steve Vinoski, Rickard Green, and Sverker Eriksson, we have an (experimental) so-called dirty-scheduler (DS) NIF API in the Erlang runtime, which has been somewhat stable since release 17.3.”
- https://medium.com/@jlouis666/erlang-dirty-scheduler-overhead-6e1219dcc7&lt;/p&gt;
-&lt;/blockquote&gt;
-
-</content>
- </entry>
- 
- <entry>
    <title>Getting Started With Rustler</title>
    <link href="http://localhost:4000/2018/08/01/getting-started-with-rustler/"/>
    <updated>2018-08-01T00:00:00-07:00</updated>
@@ -140,84 +120,85 @@
 
 &lt;p&gt;Getting started with Rustler is straightforward. Add &lt;code class=&quot;highlighter-rouge&quot;&gt;rustler&lt;/code&gt; to &lt;code class=&quot;highlighter-rouge&quot;&gt;mix.exs&lt;/code&gt;  like any other dependency:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  defp deps do
-    [
-       ...snip...
-      {:rustler, &quot;~&amp;gt; 0.18&quot;}
-    ]
-  end
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;k&quot;&gt;defp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;deps&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+       &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;snip&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:rustler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;~&amp;gt; 0.18&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Then, from the command line, run &lt;code class=&quot;highlighter-rouge&quot;&gt;mix deps.get&lt;/code&gt; and once the dependencies have been fetched, run &lt;code class=&quot;highlighter-rouge&quot;&gt;mix rustler.new&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;This command sets up both the Rust directory structure and also the interface between Elixir and the Rust NIF. You can follow the output below:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/nifty&amp;gt; mix rustler.new
-==&amp;gt; rustler
-Compiling 2 files (.erl)
-/usr/lib/erlang/lib/parsetools-2.1.2/include/yeccpre.hrl:60: Warning: erlang:get_stacktrace/0: deprecated; use the new try/catch syntax for retrieving the stack backtrace
-Compiling 6 files (.ex)
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;/nifty&amp;gt;&lt;/span&gt; mix rustler.new
+&lt;span class=&quot;gp&quot;&gt;==&amp;gt;&lt;/span&gt; rustler
+&lt;span class=&quot;go&quot;&gt;Compiling 2 files (.erl)
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;/usr/lib/erlang/lib/parsetools-2.1.2/include/yeccpre.hrl:60: Warning: erlang:get_stacktrace/0: deprecated;&lt;/span&gt; use the new try/catch syntax &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;retrieving the stack backtrace
+&lt;span class=&quot;go&quot;&gt;Compiling 6 files (.ex)
 Generated rustler app
-==&amp;gt; nifty
-This is the name of the Elixir module the NIF module will be registered to.
-Module name &amp;gt; Nifty
-This is the name used for the generated Rust crate. The default is most likely fine.
-Library name (nifty) &amp;gt;
-* creating native/nifty/README.md
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;==&amp;gt;&lt;/span&gt; nifty
+&lt;span class=&quot;go&quot;&gt;This is the name of the Elixir module the NIF module will be registered to.
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;Module name &amp;gt;&lt;/span&gt; Nifty
+&lt;span class=&quot;go&quot;&gt;This is the name used for the generated Rust crate. The default is most likely fine.
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;Library name (nifty) &amp;gt;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;* creating native/nifty/README.md
 * creating native/nifty/Cargo.toml
 * creating native/nifty/src/lib.rs
 Ready to go! See /niftynative/nifty/README.md for further instructions.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;The generated README.md explains things clearly and succinctly. Let’s walk through it. The first thing required is to add the Rust compiler and the just-created crate in &lt;code class=&quot;highlighter-rouge&quot;&gt;mix.exs&lt;/code&gt;. First, in the &lt;code class=&quot;highlighter-rouge&quot;&gt;project&lt;/code&gt; function:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  def project do
-    [
-	...snip...
-      compilers: [:rustler] ++ Mix.compilers,
-      rustler_crates: rustler_crates(),
-      ...snip...
-    ]
-  end
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;project&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+	&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;snip&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+      &lt;span class=&quot;ss&quot;&gt;compilers:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:rustler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Mix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;compilers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;ss&quot;&gt;rustler_crates:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rustler_crates&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;snip&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Then, create a new private function called &lt;code class=&quot;highlighter-rouge&quot;&gt;rustler_crates&lt;/code&gt; like so:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  defp rustler_crates do
-    [nifty: [
-      path: &quot;native/nifty&quot;,
-      mode: (if Mix.env == :prod, do: :release, else: :debug),
-    ]]
-  end
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;k&quot;&gt;defp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rustler_crates&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;nifty:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+      &lt;span class=&quot;ss&quot;&gt;path:&lt;/span&gt; &lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;native/nifty&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;ss&quot;&gt;mode:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Mix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;env&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:prod&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:release&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:debug&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;To run the Rust tests alongside the Elixir tests when you run &lt;code class=&quot;highlighter-rouge&quot;&gt;mix test&lt;/code&gt; add an alias:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  defp aliases do
-    [
-      &quot;test&quot;: [&quot;cmd cd native/nifty &amp;amp;&amp;amp; cargo test&quot;, &quot;test&quot;],
-    ]
-  end
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;k&quot;&gt;defp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aliases&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+      &lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;test&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;cmd cd native/nifty &amp;amp;&amp;amp; cargo test&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;test&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;Now, all that’s left to do get everything up and running is to &lt;code class=&quot;highlighter-rouge&quot;&gt;use&lt;/code&gt; Rustler in the Elixir module and add error handling. For simplicity, the Rust function adds two numbers together.  The Elixir function &lt;code class=&quot;highlighter-rouge&quot;&gt;add/2&lt;/code&gt; raises an error if for whatever reason it can’t load the Rust crate.&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;defmodule Nifty do
-  use Rustler, otp_app: :nifty, crate: :nifty
-  @moduledoc &quot;&quot;&quot;
-  Documentation for Nifty.
-  &quot;&quot;&quot;
 
-  def add(_a, _b), do: :erlang.nif_error(:nif_not_loaded)
-end
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;defmodule&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Nifty&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;kn&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Rustler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;otp_app:&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:nifty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;crate:&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:nifty&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;@moduledoc&lt;/span&gt; &lt;span class=&quot;sd&quot;&gt;&quot;&quot;&quot;
+  Documentation for Nifty.
+  &quot;&quot;&quot;&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:erlang&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nif_error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:nif_not_loaded&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Now, let’s turn to the Rust code which lives in &lt;code class=&quot;highlighter-rouge&quot;&gt;native/nifty/src/lib.rs&lt;/code&gt;.  First, let’s take a look at the &lt;code class=&quot;highlighter-rouge&quot;&gt;add&lt;/code&gt; function.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fn add&amp;lt;'a&amp;gt;(env: Env&amp;lt;'a&amp;gt;, args: &amp;amp;[Term&amp;lt;'a&amp;gt;]) -&amp;gt; NifResult&amp;lt;Term&amp;lt;'a&amp;gt;&amp;gt; {
-    let num1: i64 = try!(args[0].decode());
-    let num2: i64 = try!(args[1].decode());
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;'a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Env&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;'a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Term&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;'a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NifResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Term&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;'a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i64&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;try!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.decode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i64&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;try!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.decode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
 
-    Ok((atoms::ok(), num1 + num2).encode(env))
-}
+    &lt;span class=&quot;nf&quot;&gt;Ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;atoms&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;First, the function takes two arguments, the &lt;code class=&quot;highlighter-rouge&quot;&gt;env&lt;/code&gt; which is passed in by Rustler and a reference to some args and it returns a &lt;code class=&quot;highlighter-rouge&quot;&gt;NifResult&lt;/code&gt;. The two inputs and the output all have the same lifetime as denoted by &lt;code class=&quot;highlighter-rouge&quot;&gt;'a&lt;/code&gt;. Lifetimes are the way by which Rust can guarantee memory safety. The compiler guarantees that all references are valid.&lt;/p&gt;
@@ -228,20 +209,20 @@ end
 
 &lt;p&gt;What happens when you pass non-integers to the function. Let’s find out:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;iex(3)&amp;gt; Nifty.add 1, :a
-** (ArgumentError) argument error
-    (nifty) Nifty.add(1, :a)
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nf&quot;&gt;iex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Nifty&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;.add&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ArgumentError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argument&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;error&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nifty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Nifty&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;That’s pretty much what one would expect.&lt;/p&gt;
 
 &lt;p&gt;To add more functions, create the function and then add it to the &lt;code class=&quot;highlighter-rouge&quot;&gt;rustler_export_nifs!&lt;/code&gt; macro like so:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rustler_export_nifs! {
-    &quot;Elixir.Nifty&quot;,
-    [(&quot;add&quot;, 2, add), (&quot;sub&quot;, 2, sub)],
-    None
-}
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;rustler_export_nifs!&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;&quot;Elixir.Nifty&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;[(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;add&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;sub&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sub&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)],&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;None&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;In this case, there’s a function added named &lt;code class=&quot;highlighter-rouge&quot;&gt;sub&lt;/code&gt; that takes two arguments and is called &lt;code class=&quot;highlighter-rouge&quot;&gt;sub&lt;/code&gt; in both Rust and Elixir.&lt;/p&gt;
