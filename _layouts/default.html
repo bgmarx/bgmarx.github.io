@@ -6,29 +6,46 @@
     <div class="wrap">
       <div class="masthead">
         <div class="container">
-          <h3 class="masthead-title">
-            <a href="/" title="Home">{{ site.title }}</a>
-          </h3>
+          <h3 class="masthead-title"><a href="/" title="Home">{{ site.title }}</a></h3>
           <div class="list-group">
-
             <small>
-              <!--<a href="/about">About</a> /
-              <a href="/projects">Projects</a> /
-              <a href="/talks">Talks</a> / -->
-              <a href="https://pragprog.com/book/tvmelixir/adopting-elixir" target="_blank">Book</a> /
-              <a href="mailto:ben@bgmarx.com"><i class="fa fa-envelope fa-fw"></i></a> /
-              <a class="list-group-item" href="https://github.com/bgmarx"   target="_blank"><i class="fa fa-github fa-fw"></i></a> /
-              <a class="list-group-item" href="http://instagram.com/bgmarx" target="_blank"><i class="fa fa-instagram fa-fw"></i></a> /
-              <a class="list-group-item" href="https://twitter.com/bgmarx"  target="_blank"><i class="fa fa-twitter fa-fw"></i></a>
+              <!-- <a href="/about"><i class="far fa-user-circle"></i></a> /
+              <a href="/code"><i class="fas fa-code"></i></a> /
+              <a href="/talks"><i class="fas fa-video"></i></a> / -->
+              <a href="https://pragprog.com/book/tvmelixir/adopting-elixir" target="_blank"><i class="fas fa-book"></i></a> /
+              <!-- <a href="/reading-list"><i class="fas fa-list"></i></a> / -->
+              <a href="mailto:ben@bgmarx.com"><i class="fas fa-envelope"></i></a> /
+              <a class="list-group-item" href="https://github.com/bgmarx"   target="_blank"><i class="fab fa-github"></i></a> /
+              <a class="list-group-item" href="http://instagram.com/bgmarx" target="_blank"><i class="fab fa-instagram"></i></a> /
+              <a class="list-group-item" href="https://twitter.com/bgmarx"  target="_blank"><i class="fab fa-twitter"></i></a>
             </small>
           </div>
+          <div>
+            <span style="font-size:14px;">Next Speaking Engagement: <a href="http://gigcityelixir.com/">Gig City Elixir | 26-27 Oct</a></span>
+          </div>
         </div>
-
       </div>
 
       <div class="container content">
         {{ content }}
+        <div class="pagination" style="font-size:14px;color:#303030;">
+          {% if paginator.previous_page %}
+            <a href="{{ paginator.previous_page_path }}" class="previous"> < </a>
+          {% else %}
+            <span class="previous"></span>
+          {% endif %}
+          <span class="page_number ">
+            {{ paginator.page }}|{{ paginator.total_pages }}
+          </span>
+          {% if paginator.next_page %}
+            <a href="{{ paginator.next_page_path }}" class="next">></a>
+          {% else %}
+            <span class="next "></span>
+          {% endif %}
+        </div>
       </div>
+      <!-- Pagination links -->
+
     </div>
   </body>
 </html>

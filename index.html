@@ -4,8 +4,6 @@ title: Home
 ---
 
 <div class="posts">
-  Posts:
-  <br/>
   {% for post in paginator.posts %}
     <span class="post">
       <span class="post-title">
@@ -18,13 +16,4 @@ title: Home
       <span><br/></span>
       {% endif %}
   {% endfor %}
-</div>
-
-<br/>
-<div class="talks">
-    <p>Upcoming Talks:</p>
-            <span class="post-title">
-                <a href="http://gigcityelixir.com/">Gig City Elixir | 26-27 Oct</a>
-            </span>
-        </span>
 </div>
