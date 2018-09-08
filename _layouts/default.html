@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
-
   {% include head.html %}
   <body>
     <div class="wrap">
@@ -25,27 +24,27 @@
           </div>
         </div>
       </div>
-
       <div class="container content">
         {{ content }}
-        <div class="pagination" style="font-size:14px;color:#303030;">
-          {% if paginator.previous_page %}
-            <a href="{{ paginator.previous_page_path }}" class="previous"> < </a>
-          {% else %}
-            <span class="previous"></span>
-          {% endif %}
-          <span class="page_number ">
-            {{ paginator.page }}|{{ paginator.total_pages }}
-          </span>
-          {% if paginator.next_page %}
-            <a href="{{ paginator.next_page_path }}" class="next">></a>
-          {% else %}
-            <span class="next "></span>
-          {% endif %}
-        </div>
+        {% if paginator.total_pages >= 10 %}
+          <div class="pagination" style="font-size:14px;color:#303030;">
+            {% if paginator.previous_page %}
+              <a href="{{ paginator.previous_page_path }}" class="previous"> < </a>
+            {% else %}
+              <span class="previous"></span>
+            {% endif %}
+            <span class="page_number ">
+              {{ paginator.page }}|{{ paginator.total_pages }}
+            </span>
+            {% if paginator.next_page %}
+              <a href="{{ paginator.next_page_path }}" class="next">></a>
+            {% else %}
+              <span class="next "></span>
+            {% endif %}
+          </div>
+        {% else %}
+        {% endif %}
       </div>
-      <!-- Pagination links -->
-
     </div>
   </body>
 </html>
