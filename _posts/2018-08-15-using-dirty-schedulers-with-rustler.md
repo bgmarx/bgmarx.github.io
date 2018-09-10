@@ -9,9 +9,10 @@ tags:
 - Rustler
 ---
 
-In an earlier post, I showed how to get started using [Rust NIFs with Rustler](/2018/08/01/getting-started-with-rustler/). We'll continue using the same [Nifty repo](http://github.com/bgmarx/nifty). In this post, we'll be using the `dirty_schedulers` branch. Recall that there are two types of dirty shedulers - CPU-bound and IO-bound. In Erlang, these are defined as `ERL_NIF_DIRTY_JOB_CPU_BOUND` and `ERL_NIF_DIRTY_JOB_IO_BOUND`.
+In an earlier post, I showed how to get started using [Rust NIFs with Rustler](/2018/08/01/getting-started-with-rustler/). We'll continue using the same [Nifty repo](http://github.com/bgmarx/nifty). In this post, we'll be using the `dirty_schedulers` branch. Recall that there are two types of dirty schedulers - CPU-bound and IO-bound. In Erlang, these are defined as `ERL_NIF_DIRTY_JOB_CPU_BOUND` and `ERL_NIF_DIRTY_JOB_IO_BOUND`.
 
 In Rustler, they're similarly delimited with an `enum` [here](https://github.com/hansihe/rustler/blob/b6578ea3999fd42f377c2497d8fae0bd629b927d/rustler/src/schedule.rs):
+
 ````rust
 pub enum SchedulerFlags {
     Normal = 0,
