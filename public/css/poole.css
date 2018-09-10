@@ -401,9 +401,14 @@ a.pagination-item:hover {
 .comment {
   border: 1px solid #eee;
   padding: 5px;
-  font-size: 12px;
+  width: 96%;
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-bottom: -6%;
+  margin-top: 5%;
+  font-size: 13px;
+  text-align: center;
 }
-
 
 section {
   display: none;
