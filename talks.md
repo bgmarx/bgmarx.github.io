@@ -84,8 +84,8 @@ title: Talks
 
   <section id="content3">
     <div class="talk-left">
-      <h2 style="font-size:16px;"><a target="_blank" href="https://www.erlang-solutions.com/resources/webinars.html">Erlang Solutions Webinar</a> | <a target="_blank" href="https://www.slideshare.net/bgmarx/adopting-elixir">Slides</a></h2>
-      <a href="http://www.youtube.com/watch?feature=player_embedded&v=AdY5AfXs7aw" target="_blank"><img src="/public/images/talks/elixir-retrospective.png" alt="" width="240" height="180" border="5" /></a>
+      <h2 style="font-size:16px;"><a target="_blank" href="https://www.erlang-solutions.com/resources/webinars.html#18-months-of-elixir-in-production-at-2nd-largest-sport-website-in-the-world-26">Erlang Solutions Webinar</a> | <a target="_blank" href="https://www.slideshare.net/bgmarx/adopting-elixir">Slides</a></h2>
+      <a href="http://www.youtube.com/watch?feature=player_embedded&v=AdY5AfXs7aw" target="_blank"><img src="/public/images/talks/elixir-retrospectiveg.png" alt="" width="240" height="180" border="5" /></a>
     </div>
     <div class="talk-right">
       <h2 style="font-size:16px;"></h2>
