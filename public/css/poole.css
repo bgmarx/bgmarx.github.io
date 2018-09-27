@@ -410,6 +410,30 @@ a.pagination-item:hover {
   text-align: center;
 }
 
+.clearfix:after {
+   content: ".";
+   visibility: hidden;
+   display: block;
+   height: 0;
+   clear: both;
+}
+
+.talk-left {
+  float:left;
+  width: 45%;
+}
+
+.talk-right {
+  float:right;
+  width: 55%;
+}
+
+.talk-desc {
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 7% 3% 3% 2%;
+}
+
 section {
   display: none;
   padding: 20px 0 0;
