@@ -94,12 +94,12 @@ iex(3)> Nifty.spawn_dirty_io_and_receive(5)
 
 Load up the observer and let's see if we can get the dirty schedulers to activate.
 
-<img src="/public/images/dirty-cpu-observer.png" alt="drawing" style="width:100%;"/>
+<img src="/public/images/posts/dirty-cpu-observer.jpg" alt="drawing" style="width:100%;"/>
 
 Hey, look at that. It worked. And it used two of the four schedulers.
 
 What's interesting is that if you go back to `lib.rs` and change `SchedulerFlags::DirtyCpu` to `SchedulerFlags::DirtyIo` and run `spawn_dirty_cpu_and_receive/1` again with the observer running, you'll see that none of the dirty schedulers are activated.
 
-<img src="/public/images/dirty-io-observer.png" alt="drawing" style="width:100%;"/>
+<img src="/public/images/posts/dirty-io-observer.jpg" alt="drawing" style="width:100%;"/>
 
 That makes sense and I'll figure out a way to simulate dirty IO in a future post.

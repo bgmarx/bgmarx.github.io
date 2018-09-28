@@ -53,7 +53,7 @@ title: Talks
     <div class="clearfix">
       <div class="talk-left">
         <h2 style="font-size:16px;"><a target="_blank" href="https://www.codesync.global/conferences/code-beam-sf-2018/">CodeBeam SF 2018</a> | <a target="_blank" href="https://www.slideshare.net/bgmarx/trusted-autonomy">Slides</a></h2>
-        <a href="http://www.youtube.com/watch?feature=player_embedded&v=NAdCxr6C4DI" target="_blank"><img src="/public/images/talks/trusted-autonomy.png" alt="" width="240" height="180" border="5" /></a>
+        <a href="http://www.youtube.com/watch?feature=player_embedded&v=NAdCxr6C4DI" target="_blank"><img src="/public/images/talks/trusted-autonomy.jpg" alt="" width="240" height="180" border="5" /></a>
       </div>
       <div class="talk-right">
         <h2 style="font-size:16px;"></h2>
@@ -66,7 +66,7 @@ title: Talks
     <div class="clearfix">
       <div class="talk-left">
         <h2 style="font-size:16px;"><a target="_blank" href="http://www.elixirdaze.com/">ElixirDaze 2018</a> | <a target="_blank" href="https://www.slideshare.net/bgmarx/imperfect-architecture">Slides</a></h2>
-        <a href="http://www.youtube.com/watch?feature=player_embedded&v=_h6A2MMFXgg" target="_blank"><img src="/public/images/talks/imperfect-architecture.png" alt="" width="240" height="180" border="5" /></a>
+        <a href="http://www.youtube.com/watch?feature=player_embedded&v=_h6A2MMFXgg" target="_blank"><img src="/public/images/talks/imperfect-architecture.jpg" alt="" width="240" height="180" border="5" /></a>
       </div>
       <div class="talk-right">
         <h2 style="font-size:16px;"></h2>
