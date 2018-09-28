@@ -22,7 +22,7 @@ title: Talks
     <div class="clearfix">
       <div class="talk-left">
         <h2 style="font-size:16px;"><a target="_blank" href="https://www.erlang-solutions.com/resources/webinars.html">Erlang Solutions Webinar</a> | <a target="_blank" href="https://www.slideshare.net/bgmarx/adopting-elixir">Slides</a></h2>
-        <a href="http://www.youtube.com/watch?feature=player_embedded&v=mott8ie-N0M" target="_blank"><img src="/public/images/talks/adopting-elixir.png" alt="" width="240" height="180" border="5" /></a>
+        <a href="http://www.youtube.com/watch?feature=player_embedded&v=mott8ie-N0M" target="_blank"><img src="/public/images/talks/adopting-elixir.jpg" alt="" width="240" height="180" border="5" /></a>
       </div>
       <div class="talk-right">
         <h2 style="font-size:16px;"></h2>
@@ -40,7 +40,7 @@ title: Talks
     <div class="clearfix">
       <div class="talk-left">
         <h2 style="font-size:16px;"><a target="_blank" href="https://elixirconf.com/">ElixirConf 2018</a> | <a target="_blank" href="https://www.slideshare.net/bgmarx/take-your-time-113266815">Slides</a></h2>
-        <a href="http://www.youtube.com/watch?feature=player_embedded&v=_ANg28Pello" target="_blank"><img src="/public/images/talks/take-your-time.png" alt="" width="240" height="180" border="5" /></a>
+        <a href="http://www.youtube.com/watch?feature=player_embedded&v=_ANg28Pello" target="_blank"><img src="/public/images/talks/take-your-time.jpg" alt="" width="240" height="180" border="5" /></a>
       </div>
       <div class="talk-right">
         <h2 style="font-size:16px;"></h2>
@@ -78,14 +78,12 @@ title: Talks
     </div>         
   </section>
 
-  <section id="content2">
-
-  </section>
+  <section id="content2"></section>
 
   <section id="content3">
     <div class="talk-left">
       <h2 style="font-size:16px;"><a target="_blank" href="https://www.erlang-solutions.com/resources/webinars.html#18-months-of-elixir-in-production-at-2nd-largest-sport-website-in-the-world-26">Erlang Solutions Webinar</a> | <a target="_blank" href="https://www.slideshare.net/bgmarx/adopting-elixir">Slides</a></h2>
-      <a href="http://www.youtube.com/watch?feature=player_embedded&v=AdY5AfXs7aw" target="_blank"><img src="/public/images/talks/elixir-retrospective.png" alt="" width="240" height="180" border="5" /></a>
+      <a href="http://www.youtube.com/watch?feature=player_embedded&v=AdY5AfXs7aw" target="_blank"><img src="/public/images/talks/elixir-retrospective.jpg" alt="" width="240" height="180" border="5" /></a>
     </div>
     <div class="talk-right">
       <h2 style="font-size:16px;"></h2>
@@ -95,8 +93,5 @@ title: Talks
       </div>
     </div>
   </section>
-
-  <!-- <section id="content4">
-
-  </section> -->
+  <!-- <section id="content4"></section> -->
 </div>
