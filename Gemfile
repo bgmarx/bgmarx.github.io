@@ -4,4 +4,5 @@ source 'https://rubygems.org'
 # maintaining a local Jekyll environment in sync with GitHub Pages
 # https://github.com/github/pages-gem
 gem 'github-pages'
+gem "jekyll", ">= 3.6.3"
 ruby RUBY_VERSION
