@@ -74,8 +74,18 @@ title: Reading List
         <tr>
           <td><i>Pachinko</i><br/>Min Jin Lee</td>
           <td><i></i><br/></td>
-          <td><i></i><br/></td>
+          <td><i>Practical Monitoring</i><br/>Mike Julian</td>
         </tr>
+        <tr>
+          <td><i></i><br/></td>
+          <td><i></i><br/></td>
+          <td><i></i><br/></td>
+        </tr>  
+        <tr>
+          <td><i></i><br/></td>
+          <td><i></i><br/></td>
+          <td><i></i><br/></td>
+        </tr>               
       </tbody>
     </table>
   </div>  
