@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Sending and Receiving Packets with UDP
+title: Sending and Receiving UDP
 tags:
 - Elixir
 - Erlang
