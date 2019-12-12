@@ -34,7 +34,7 @@ The last bit we have to do is add `Logger` configuration details. Open up `confi
 ```elixir
 config :logger,
   format: "$message\n",
-  level: String.to_atom(System.get_env("LOG_LEVEL") || "info")
+  level: String.to_atom(System.get_env("LOG_LEVEL") || "info"),
   handle_otp_reports: true,
   handle_sasl_reports: true
 ```
