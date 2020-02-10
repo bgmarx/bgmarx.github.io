@@ -44,7 +44,7 @@ iex(2)> App.SlowInit.start_link(5000)
 {:ok, #PID<0.126.0>}
 ```
 
-Waiting five seconds---or some other lengthy amount of time---before your GenServer initializes isn't ideal. Before OTP 21, you could do get by with a `send` hack. 
+Waiting five seconds---or some other lengthy amount of time---before your GenServer initializes isn't ideal. Before OTP 21, you could get by with a `send` hack. 
 
 ### The Old Way: `send` 
 
